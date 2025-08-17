@@ -1,6 +1,7 @@
 import { GluegunCommand } from 'gluegun'
 import { marked } from 'marked';
 import { markedTerminal } from 'marked-terminal';
+import { ConfigService } from '../common/config'
 
 const command: GluegunCommand = {
   name: 'madman',
@@ -8,17 +9,25 @@ const command: GluegunCommand = {
     const { print, filesystem, prompt } = toolbox
     marked.use(markedTerminal());
 
-    const madmanPath = `${filesystem.homedir()}/.madman`;
-    const files = filesystem.list(madmanPath);
-    print.info(files);
-    const {fileName} = await prompt.ask({
+    const configService = await new ConfigService(filesystem, print);
+
+    const {manual} = await prompt.ask({
       type: 'autocomplete',
-      name: 'fileName',
-      message: 'Select doc to see',
-        choices: files.map(file => ({name: print.colors.magenta(file), value: file})),
+      name: 'manual',
+      message: 'Select manual to see',
+      choices: Object.values(await configService.getConfig())
+        .map(man => ({name: print.colors.magenta(man.name), value: [configService.madmanPath, man.name, man.folder].join('/')})),
     });
 
-    const fileContent = filesystem.read(`${madmanPath}/${fileName}`)
+    const pages = filesystem.list(manual);
+    const {page} = await prompt.ask({
+      type: 'autocomplete',
+      name: 'page',
+      message: 'Select doc to see',
+        choices: pages.map(page => ({name: print.colors.magenta(page), value: `${manual}/${page}`})),
+    });
+
+    const fileContent = filesystem.read(page)
     print.info(marked.parse(fileContent))
   }
 }

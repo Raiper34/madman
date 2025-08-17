@@ -3,19 +3,16 @@ import { marked } from 'marked'
 import { markedTerminal } from 'marked-terminal'
 import { ConfigService } from '../common/config'
 import pager from 'less-pager-mini'
-import { TreeUtils } from 'simple-tree-utils'
 
 const IGNORED_FILES = ['licence.md', 'license.md', 'readme.md', 'changelog.md'];
 
 async function pickPage(filesystem: GluegunFilesystem, print: GluegunPrint, prompt: GluegunPrompt, strings: GluegunStrings, manual: string): Promise<string> {
-  const treeUtils = new TreeUtils()
   const pages = filesystem.inspectTree(manual)
-  treeUtils.computePaths([pages], 'name', '/', 'path', manual)
   const { pageJson } = await prompt.ask({
     type: 'autocomplete',
     name: 'pageJson',
     message: 'Select doc to see',
-    choices: (pages.children.length ? pages.children as any[] : [{ type: 'dir', path: `${manual}/..`, name: '..' }])
+    choices: (pages.children.length ? pages.children as any[] : [{ type: 'dir', name: '..' }])
       .filter(file => file.type !== 'file' || (file.name.endsWith('.md') && !IGNORED_FILES.includes(file.name)))
       .map(file => ({
         name: file.type === 'dir' ? print.colors.blue(file.name) : print.colors.green(strings.lowerCase(file.name.replace('.md', ''))),

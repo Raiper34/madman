@@ -1,7 +1,7 @@
 import { filesystem, GluegunCommand, GluegunFilesystem, GluegunPrint, GluegunPrompt } from 'gluegun'
 import { simpleGit } from 'simple-git'
 import { ConfigService } from '../common/config'
-
+import { TreeUtils } from 'simple-tree-utils'
 
 async function showRepos(filesystem: GluegunFilesystem, print: GluegunPrint, configService: ConfigService): Promise<void> {
   const config = await configService.getConfig();
@@ -32,13 +32,19 @@ async function addRepo(prompt: GluegunPrompt, print: GluegunPrint, configService
     message: 'Provide manual name (will be used for manual selecting)',
     name: 'name'
   });
-  await simpleGit().clone(repo, `${configService.madmanPath}/${name}`)
-  const files = filesystem.list(`${configService.madmanPath}/${name}`) // todo make it recursively and filter only folders
+  await simpleGit().clone(repo, `${configService.madmanPath}/${name}`);
+  const treeUtils = new TreeUtils();
+  const folderTree = filesystem.inspectTree(`${configService.madmanPath}/${name}`);
+  treeUtils.computePaths(folderTree.children, 'name', '/', 'path', '');
+  const folderList = treeUtils.tree2List(folderTree.children).filter(file => file.type === 'dir' && !file.path.includes('.git') && !file.name.includes('.git'));
   const { folder } = await prompt.ask({
-    type: 'autocomplete',
+    type: 'select',
     name: 'folder',
     message: 'Select folder to use as manual source (if whole repo is manual source, leave empty)',
-    choices: files.map(file => ({ name: file, value: file }))
+    choices: folderList.map((file: any) => ({
+      name: `${file.path}${file.name}`,
+      value: `${file.path}${file.name}`,
+    }))
   });
   await configService.updateConfig({ [name]: { name, repo, folder } });
   print.info(`Manual ${name} added successfully`);

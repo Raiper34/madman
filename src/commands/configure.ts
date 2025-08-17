@@ -10,7 +10,7 @@ async function showRepos(filesystem: GluegunFilesystem, print: GluegunPrint, con
 
 async function removeRepo(prompt: GluegunPrompt, filesystem: GluegunFilesystem, print: GluegunPrint, configService: ConfigService): Promise<void> {
   const { name } = await prompt.ask({
-    type: 'select',
+    type: 'autocomplete',
     name: 'name',
     message: 'Select folder to use as manual source (if whole repo is manual source, leave empty)',
     choices: Object.values(await configService.getConfig())
@@ -18,7 +18,7 @@ async function removeRepo(prompt: GluegunPrompt, filesystem: GluegunFilesystem, 
   });
   filesystem.remove(`${configService.madmanPath}/${name}`);
   await configService.updateConfigRemove(name);
-  print.info(`Manual ${name} removed successfully`);
+  print.success(`Manual ${name} removed successfully`);
 }
 
 async function addRepo(prompt: GluegunPrompt, print: GluegunPrint, configService: ConfigService): Promise<void> {
@@ -26,7 +26,7 @@ async function addRepo(prompt: GluegunPrompt, print: GluegunPrint, configService
     type: 'input',
     message: 'Provide git repository https to clone from ',
     name: 'repo'
-  })
+  });
   const { name } = await prompt.ask({
     type: 'input',
     message: 'Provide manual name (will be used for manual selecting)',
@@ -38,12 +38,12 @@ async function addRepo(prompt: GluegunPrompt, print: GluegunPrint, configService
   treeUtils.computePaths(folderTree.children, 'name', '/', 'path', '');
   const folderList = treeUtils.tree2List(folderTree.children).filter(file => file.type === 'dir' && !file.path.includes('.git') && !file.name.includes('.git'));
   const { folder } = await prompt.ask({
-    type: 'select',
+    type: 'autocomplete',
     name: 'folder',
-    message: 'Select folder to use as manual source (if whole repo is manual source, leave empty)',
-    choices: folderList.map((file: any) => ({
-      name: `${file.path}${file.name}`,
-      value: `${file.path}${file.name}`,
+    message: 'Select folder to use as manual source',
+    choices: [{name: '. (root)', path: '.'}, ...folderList].map((file: any) => ({
+      message: file.path === '.' ? print.colors.red('. (root)') : print.colors.blue(`${file.path}${file.name}`),
+      name: file.path === '.'  ? '.' : `${file.path}${file.name}`,
     }))
   });
   await configService.updateConfig({ [name]: { name, repo, folder } });

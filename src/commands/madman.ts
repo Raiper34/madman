@@ -37,7 +37,7 @@ const command: GluegunCommand = {
       message: 'Select manual to see',
       choices: Object.values(await configService.getConfig())
         .map(man => ({
-          name: print.colors.magenta(man.name),
+          name: print.colors.green(man.name),
           value: [configService.madmanPath, man.name, man.folder].join('/')
         }))
     })

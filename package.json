@@ -31,7 +31,8 @@
     "less-pager-mini": "^1.2.1",
     "marked": "^15.0.12",
     "marked-terminal": "^7.3.0",
-    "simple-git": "^3.28.0"
+    "simple-git": "^3.28.0",
+    "simple-tree-utils": "^3.1.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

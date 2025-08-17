@@ -1,7 +1,8 @@
 import { GluegunCommand } from 'gluegun'
 import { marked } from 'marked';
 import { markedTerminal } from 'marked-terminal';
-import { ConfigService } from '../common/config'
+import { ConfigService } from '../common/config';
+import pager from 'less-pager-mini';
 
 const command: GluegunCommand = {
   name: 'madman',
@@ -28,8 +29,10 @@ const command: GluegunCommand = {
     });
 
     const fileContent = filesystem.read(page)
-    print.info(marked.parse(fileContent))
+    await pager(marked.parse(fileContent));
+
   }
 }
+
 
 module.exports = command

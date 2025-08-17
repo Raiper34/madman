@@ -28,6 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "gluegun": "latest",
+    "less-pager-mini": "^1.2.1",
     "marked": "^15.0.12",
     "marked-terminal": "^7.3.0",
     "simple-git": "^3.28.0"

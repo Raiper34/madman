@@ -17,7 +17,20 @@ export class RepositoryService {
 
   showRepos(): void {
     const config = this.configService.getConfig();
-    this.print.info(Object.values(config).map((val: { name: string }) => val.name).join('\n'))
+    this.print.table([
+      [
+        this.print.colors.bold('Name'),
+        this.print.colors.bold('Path'),
+        this.print.colors.bold('Local'),
+        this.print.colors.bold('Repo'),
+      ],
+      ...Object.values(config).map(val => [
+        val.name,
+        [this.configService.madmanPath, val.name, val.folder].join(this.fileService.separator()),
+        this.print.xmark,
+        val.repo,
+      ]),
+    ], {format: 'markdown'});
   }
 
   async removeRepo(): Promise<void> {
@@ -34,6 +47,6 @@ export class RepositoryService {
 
     const folder = await this.inputService.select('folder', 'Select manual to remove', this.choiceService.folders(this.fileService.getFolders(`${this.configService.madmanPath}/${name}`) as any)); // todo fix
     this.configService.updateConfig({ [name]: { name, repo, folder } });
-    this.print.info(`Manual ${name} added successfully`);
+    this.print.success(`Manual ${name} added successfully`);
   }
 }

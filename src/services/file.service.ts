@@ -33,4 +33,8 @@ export class FileService {
   read(path: string): string {
     return this.filesystem.read(path);
   }
+
+  separator(): string {
+    return this.filesystem.separator;
+  }
 }

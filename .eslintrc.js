@@ -12,7 +12,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
 
     'prettier',
-    'plugin:prettier/recommended',
+    //'plugin:prettier/recommended',
   ],
   rules: {},
 }

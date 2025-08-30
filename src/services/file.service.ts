@@ -34,6 +34,10 @@ export class FileService {
     return this.filesystem.read(path);
   }
 
+  move(oldPath: string, newPath: string): void {
+    this.filesystem.move(oldPath, newPath)
+  }
+
   separator(): string {
     return this.filesystem.separator;
   }

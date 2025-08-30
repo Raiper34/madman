@@ -1,5 +1,6 @@
 import { GluegunFilesystem, GluegunPrint } from 'gluegun'
 import { Config } from '../models/config'
+import { Manual } from '../models/manual'
 
 export class ConfigService {
 
@@ -27,6 +28,17 @@ export class ConfigService {
 
   updateConfig(configUpdates: Config): void {
     this.saveConfig({ ...this.getConfig(), ...configUpdates })
+  }
+
+  updateConfigEntry(name: string, newName: string): void {
+    const oldManual = this.getConfig()[name];
+    this.updateConfigRemove(name);
+    const updatedManual: Manual = {
+      ...oldManual,
+      name: newName,
+      folder: oldManual.folder.replace(`${this.madmanPath}/${name}`, `${this.madmanPath}/${newName}`),
+    };
+    this.updateConfig({[updatedManual.name]: updatedManual});
   }
 
   updateConfigRemove(keyToRemove: string): void {

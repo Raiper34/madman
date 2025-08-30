@@ -10,8 +10,8 @@ export class InputService {
   ) {
   }
 
-  async input(name: string, message: string): Promise<string> {
-    return await this.ask({type: 'input', message, name});
+  async input(name: string, message: string, initial?: string): Promise<string> {
+    return await this.ask({type: 'input', message, name, initial});
   }
 
   async select(name: string, message: string, choices: Choice[]): Promise<string> {

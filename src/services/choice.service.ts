@@ -16,6 +16,10 @@ export class ChoiceService {
     return Object.values(config).map(man => ({name: man.name, value: man.name}));
   }
 
+  remoteRepositories(config: Config): Choice[] {
+    return Object.values(config).filter(man => man.repo).map(man => ({name: man.name, value: man.name}));
+  }
+
   folders(folders: (InspectTreeResult & {path: string})[]): Choice[] {
     return [
       {name: '. (root)', path: '.'},

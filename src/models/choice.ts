@@ -1,5 +1,5 @@
 export interface Choice {
   name: string,
-  value?: string,
+  value?: string | number | boolean,
   message?: string
 }

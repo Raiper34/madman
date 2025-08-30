@@ -26,11 +26,11 @@ export class ChoiceService {
     }))
   }
 
-  manuals(config: Config, rootPath: string): Choice[] {
+  manuals(config: Config): Choice[] {
     return Object.values(config)
       .map(man => ({
         name: this.fileColor(man.name),
-        value: [rootPath, man.name, man.folder].join('/'),
+        value: man.folder,
       }));
   }
 

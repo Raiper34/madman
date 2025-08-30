@@ -1,5 +1,6 @@
 import { GluegunParameters, GluegunPrompt } from 'gluegun'
 import { PromptOptions } from 'gluegun/build/types/toolbox/prompt-enquirer-types'
+import { Choice } from '../models/choice'
 
 export class InputService {
 
@@ -13,8 +14,8 @@ export class InputService {
     return await this.ask({type: 'input', message, name});
   }
 
-  async select(name: string, message: string, choices: {name: string, value?: string, message?: string}[]): Promise<string> {
-    return await this.ask({ type: 'autocomplete', name, message, choices});
+  async select(name: string, message: string, choices: Choice[]): Promise<string> {
+    return await this.ask({ type: 'autocomplete', name, message, choices} as PromptOptions);
   }
 
   private async ask(options: PromptOptions): Promise<string> {

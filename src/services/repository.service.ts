@@ -27,7 +27,7 @@ export class RepositoryService {
       ...Object.values(config).map(val => [
         val.name,
         [this.configService.madmanPath, val.name, val.folder].join(this.fileService.separator()),
-        this.print.xmark,
+        val.repo ? this.print.checkmark : this.print.xmark,
         val.repo,
       ]),
     ], {format: 'markdown'});
@@ -41,12 +41,19 @@ export class RepositoryService {
   }
 
   async addRepo(): Promise<void> {
-    const repo = await this.inputService.input('repo', 'Provide git repository https to clone from');
-    const name = await this.inputService.input('name', 'Provide manual name (will be used for manual selecting)');
-    await GitService.clone(repo, `${this.configService.madmanPath}/${name}`);
+    const name = await this.inputService.input('name', 'What is name of manual? (will be used for manual selecting)');
+    let originFolder: string;
+    let repo: string;
+    if (await this.inputService.select('repo', 'What type of manual is it?', [{name: 'remote', value: true}, {name: 'local', value: false}])) {
+      repo = await this.inputService.input('repo', 'What is repository url? (https or ssh)');
+      await GitService.clone(repo, `${this.configService.madmanPath}/${name}`);
+      originFolder = `${this.configService.madmanPath}/${name}`;
+    } else {
+      originFolder = await this.inputService.input('folder', 'Wht is path to local folder? (absolute path)');
+    }
 
-    const folder = await this.inputService.select('folder', 'Select manual to remove', this.choiceService.folders(this.fileService.getFolders(`${this.configService.madmanPath}/${name}`) as any)); // todo fix
-    this.configService.updateConfig({ [name]: { name, repo, folder } });
+    const folder = await this.inputService.select('folder', 'Select manual to remove', this.choiceService.folders(this.fileService.getFolders(originFolder) as any)); // todo fix
+    this.configService.updateConfig({ [name]: { name, repo, folder: `${originFolder}/${folder}`} });
     this.print.success(`Manual ${name} added successfully`);
   }
 }

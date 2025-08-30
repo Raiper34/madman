@@ -18,10 +18,12 @@ export class FileService {
     return this.treeUtils.filter(folderTree.children, file => file.type === 'dir' && !file.path.replace(path, '').includes('.'));
   }
 
-  getManuals(path: string): InspectTreeResult[] {
+  getManuals(path: string, isManualRoot: boolean): InspectTreeResult[] {
     const pages = this.filesystem.inspectTree(path)
-    return (pages.children.length ? pages.children as any[] : [{ type: 'dir', name: '..' }])
-      .filter(file => file.type !== 'file' || (file.name.endsWith(`.${MANUAL_EXTENSION}`) && !MANUAL_IGNORED_FILES.includes(file.name)))
+    return [
+      ...(isManualRoot ? [] : [{type: 'dir', name: '..'}]),
+      ...pages.children as any[], // todo fix it in future
+    ].filter(file => file.type !== 'file' || (file.name.endsWith(`.${MANUAL_EXTENSION}`) && !MANUAL_IGNORED_FILES.includes(file.name)))
   }
 
   remove(path: string): void {

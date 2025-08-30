@@ -21,7 +21,7 @@ const command: GluegunCommand = {
     const manualService = new ManualService(inputService, fileService, choiceService);
 
     const manual = await inputService.select('manual', 'Select manual to see', choiceService.manuals(configService.getConfig(), configService.madmanPath));
-    await pager(marked.parse(await manualService.getManualContent(manual)))
+    await pager(marked.parse(await manualService.getManualContent(manual, manual)))
   }
 }
 

@@ -34,9 +34,9 @@ export class ChoiceService {
       }));
   }
 
-  manualPages(files: InspectTreeResult[]): Choice[] { // todo filter other unsupported files
+  manualPages(files: InspectTreeResult[]): Choice[] {
     return files.map(file => ({
-      name: file.type === 'dir' ? this.folderColor(file.name) : this.fileColor(this.manualOption(file.name)),
+      name: file.name === '..' ? this.parentColor(file.name) : (file.type === 'dir' ? this.folderColor(file.name) : this.fileColor(this.manualOption(file.name))),
       value: JSON.stringify(file),
     }));
   }
@@ -46,6 +46,10 @@ export class ChoiceService {
   }
 
   private rootColor(str: string): string {
+    return this.print.colors.red(str);
+  }
+
+  private parentColor(str: string): string {
     return this.print.colors.red(str);
   }
 

@@ -1,6 +1,7 @@
 import { InputService } from './input.service'
 import { FileService } from './file.service'
 import { ChoiceService } from './choice.service'
+import * as path from 'path';
 
 export class ManualService {
 
@@ -11,19 +12,22 @@ export class ManualService {
   ) {
   }
 
-  async pickPage(manualPath: string): Promise<string> {
+  async pickPage(manualPath: string, root: string): Promise<string> {
     const pageJson = await this.inputService.select(
       'pageJson',
       'Select doc to see',
-      this.choiceService.manualPages(this.fileService.getManuals(manualPath)),
+      this.choiceService.manualPages(this.fileService.getManuals(manualPath, this.isRootPath(manualPath, root))),
     );
     const page = JSON.parse(pageJson);
-    return page.type === 'dir' ? this.pickPage(`${manualPath}/${page.name}`) : `${manualPath}/${page.name}`
+    const pagePath = path.resolve(`${manualPath}/${page.name}`);
+    return page.type === 'dir' ? this.pickPage(pagePath, root) : pagePath;
   }
 
-  async getManualContent(manualPath: string): Promise<string> {
-    return this.fileService.read(await this.pickPage(manualPath))
+  async getManualContent(manualPath: string, root: string): Promise<string> {
+    return this.fileService.read(await this.pickPage(manualPath, root))
   }
 
-
+  private isRootPath(manualPath: string, root: string): boolean {
+    return path.resolve(root) === path.resolve(manualPath);
+  }
 }

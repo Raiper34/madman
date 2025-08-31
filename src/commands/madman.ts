@@ -23,7 +23,9 @@ const command: GluegunCommand = {
 
     const manualList = choiceService.manuals(configService.getConfig());
     if (manualList.length) {
-      const manual = await inputService.select('manual', 'Select manual to see', manualList);
+      const manual = parameters.first ?
+        configService.getConfig()[parameters.first].folder :
+        await inputService.select('manual', 'Select manual to see', manualList);
       await pager(marked.parse(await manualService.getManualContent(manual, manual)));
     } else {
       print.warning('No manual found! Try add one with "madman add" command');

@@ -63,7 +63,7 @@ export class RepositoryService {
     const name = await this.inputService.input('name', 'What is name of manual? (will be used for manual selecting)');
     let originFolder = `${this.configService.madmanPath}/${name}`;
     let repo: string;
-    if (await this.inputService.select('repo', 'What type of manual is it?', [{name: 'remote', value: true}, {name: 'local', value: false}])) {
+    if (await this.inputService.select('remote', 'What type of manual is it?', [{name: 'remote', value: true}, {name: 'local', value: false}])) {
       repo = await this.inputService.input('repo', 'What is repository url? (https or ssh)');
       const spinner = this.print.spin({discardStdin: false, text: `Cloning ${name} repo into ${originFolder}`});
       try {

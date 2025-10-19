@@ -1,0 +1,11 @@
+{
+  "copyFilesSettings": {
+    "whenFileExists": "overwrite"
+  },
+  "copyFiles": [
+    {
+      "from": "../assets/logo.svg",
+      "to": "../build/docs/logo.svg"
+    }
+  ]
+}

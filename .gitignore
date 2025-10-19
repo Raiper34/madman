@@ -7,3 +7,7 @@ dist
 build
 .vscode
 .idea
+.vitepress/cache
+
+# Local Netlify folder
+.netlify

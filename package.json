@@ -24,7 +24,10 @@
     "build:bin": "nexe bin/madman --build",
     "docs:dev": "vitepress dev",
     "docs:preview": "vitepress preview",
-    "deploy": "npm run build:docs && netlify deploy --dir=build/docs --prod"
+    "deploy": "npm run build:docs && netlify deploy --dir=build/docs --prod",
+    "release": "release-it",
+    "changelog": "auto-changelog -p",
+    "commit": "cz"
   },
   "files": [
     "build",
@@ -47,8 +50,11 @@
     "@types/node": "^12.7.11",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
+    "auto-changelog": "^2.5.0",
+    "commitizen": "^4.3.1",
     "copy-files-from-to": "^3.12.1",
     "copyfiles": "^2.4.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -58,6 +64,7 @@
     "nexe": "^5.0.0-beta.4",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
+    "release-it": "^19.0.5",
     "ts-jest": "^26.5.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5",

@@ -11,19 +11,21 @@
 ![madman logo](assets/logo.svg)
 # Madman
 **Madman** - MD manual - is the command-line tool that turns any `*.md` files into command-line manual pages.
-It can turn any repository with `*.md` files into manual pages or even a local folder with `*.md` files.
+It can turn any repository with `*.md` files or even a local folder with `*.md` files into manual pages.
+
 I have missed an easy-to-use tool for showing my notes in the terminal.
 The main idea behind the tool is to have some note repositories on GitHub, which are separated `*.md` files and are modified by GitHub's WYSIWYG editor, and these notes should be easily displayed using a command line interface.
-The tool is developed generally and surely can be used in other ways too, but the general idea is above.
+
+The tool is developed generally and surely can be used in other ways too, but the general idea is above.  
 ![madman demo](docs/demo.gif)
 
 ### Content
-- [🚀 Instalation](#-instalation)
+- [🚀 Installation](#-installation)
 - [💻 Usage](#-usage)
 - [📚 Documentation and demos](#-documentation-and-demos)
 - [📖 License](#-license)
 
-## 🚀 Instalation
+## 🚀 Installation
 
 Install **madman** tool
 ```
@@ -31,13 +33,15 @@ npm install madman --global
 ```
 
 ## 💻 Usage
+## Add
 To add the first documentation, run `madman add` command like
 ```
-madman add --name example --remote true --repo git@github.com:Raiper34/madman.git --folder docs
+madman add --name madman-doc --remote true --repo git@github.com:Raiper34/madman.git --folder docs
 ``` 
 Then command creates example documentation from `docs` folder of `git@github.com:Raiper34/madman.git` repository.
 
-To show documentation, run `madman <DOC_NAME>` command
+## Show
+To show documentation, run `madman <DOC_NAME>` command in above example `madman madman-doc`
 ```
 madman example
 ```

@@ -18,7 +18,9 @@ hero:
       link: /introduction
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 📡  Remote
+    details: Create documentation from remote repository *.md files
+  - title: 📁 Local
+    details: Turn your local *.md files into CLI documentation
 ---
 

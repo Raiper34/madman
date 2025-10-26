@@ -10,12 +10,12 @@ npm install madman --global
 ## Add
 To add the first documentation, run `madman add` command like  
 ```
-madman add --name example --remote true --repo git@github.com:Raiper34/madman.git --folder docs
+madman add --name madman-doc --remote true --repo git@github.com:Raiper34/madman.git --folder docs
 ``` 
 Then command creates example documentation from `docs` folder of `git@github.com:Raiper34/madman.git` repository.
 
 ## Show
-To show documentation, run `madman <DOC_NAME>` command
+To show documentation, run `madman <DOC_NAME>` command in above example `madman madman-doc`
 ```
 madman example
 ```
